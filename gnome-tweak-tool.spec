@@ -4,7 +4,7 @@
 #
 Name     : gnome-tweak-tool
 Version  : 3.24.0
-Release  : 2
+Release  : 3
 URL      : https://download.gnome.org/sources/gnome-tweak-tool/3.24/gnome-tweak-tool-3.24.0.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-tweak-tool/3.24/gnome-tweak-tool-3.24.0.tar.xz
 Summary  : No detailed summary available
@@ -74,8 +74,11 @@ python components for the gnome-tweak-tool package.
 %patch1 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1492187260
+export SOURCE_DATE_EPOCH=1493123082
 %reconfigure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -83,11 +86,11 @@ make V=1  %{?_smp_mflags}
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1492187260
+export SOURCE_DATE_EPOCH=1493123082
 rm -rf %{buildroot}
 %make_install
 %find_lang gnome-tweak-tool
