@@ -1,4 +1,4 @@
-From 103bb94a75edce4ac09578e7383a23ff628d30d3 Mon Sep 17 00:00:00 2001
+From dceb95d9166927737518b8eb924e0615f28f73ec Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Fri, 14 Apr 2017 16:55:03 +0100
 Subject: [PATCH] Port GNOME Tweak Tool to Python 3
@@ -6,6 +6,13 @@ Subject: [PATCH] Port GNOME Tweak Tool to Python 3
 This change modernises GTT by requiring Python 3 only. Portions of this
 change were made using the 2to3 tool, whereas others are manual ports to
 ensure use of new Python approaches.
+
+Additionally, we fix a startup crash when GNOME Shell isn't running, i.e.
+GNOME Tweak Tool has been used in a GNOME based environment but not GNOME
+Shell itself.
+
+---
+https://bugzilla.gnome.org/show_bug.cgi?id=781321
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
 ---
@@ -19,14 +26,14 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  gtweak/tweaks/tweak_group_interface.py        |  4 ++--
  gtweak/tweaks/tweak_group_shell.py            |  2 +-
  gtweak/tweaks/tweak_group_shell_extensions.py |  9 +++++----
- gtweak/tweaks/tweak_group_startup.py          |  2 +-
+ gtweak/tweaks/tweak_group_startup.py          |  4 ++--
  gtweak/tweaks/tweak_group_test.py             |  2 +-
  gtweak/tweaks/tweak_group_xkb.py              | 29 +++++++++++++++++++++++----
  gtweak/tweaks/tweak_wacom.py                  |  6 +++---
  gtweak/tweakview.py                           |  2 +-
- gtweak/utils.py                               |  2 +-
+ gtweak/utils.py                               |  5 +++--
  gtweak/widgets.py                             |  4 ++--
- 17 files changed, 56 insertions(+), 34 deletions(-)
+ 17 files changed, 59 insertions(+), 36 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
 index 95c0214..9e14bed 100644
@@ -224,7 +231,7 @@ index 8ff6cd1..7f6a093 100644
          self.set_header_func(self._list_header_func, None)
  
 diff --git a/gtweak/tweaks/tweak_group_startup.py b/gtweak/tweaks/tweak_group_startup.py
-index 94d08b0..4a9cd84 100644
+index 94d08b0..c3310c9 100644
 --- a/gtweak/tweaks/tweak_group_startup.py
 +++ b/gtweak/tweaks/tweak_group_startup.py
 @@ -14,7 +14,7 @@
@@ -236,6 +243,15 @@ index 94d08b0..4a9cd84 100644
  
  import os.path
  import subprocess
+@@ -337,7 +337,7 @@ class AutostartListBoxTweakGroup(ListBoxTweakGroup):
+                     str(os.getuid()),'-o','cmd'],
+                     stdout=subprocess.PIPE)
+         out = cmd.communicate()[0]
+-        for l in out.split('\n'):
++        for l in out.decode('utf8').split('\n'):
+             exe = l.split(' ')[0]
+             if exe and exe[0] != '[': #kernel process
+                 exes.append( os.path.basename(exe) )
 diff --git a/gtweak/tweaks/tweak_group_test.py b/gtweak/tweaks/tweak_group_test.py
 index 54d4afa..a3a4501 100644
 --- a/gtweak/tweaks/tweak_group_test.py
@@ -341,10 +357,20 @@ index 0a2eaec..7ab720b 100644
  
          for g in groups:
 diff --git a/gtweak/utils.py b/gtweak/utils.py
-index 39f8833..946a2d6 100644
+index 39f8833..607570b 100644
 --- a/gtweak/utils.py
 +++ b/gtweak/utils.py
-@@ -265,7 +265,7 @@ class XSettingsOverrides:
+@@ -111,7 +111,8 @@ def extract_zip_file(z, members_path, dest):
+ def execute_subprocess(cmd_then_args, block=True):
+     p = subprocess.Popen(
+             cmd_then_args,
+-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
++            stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True,
++            universal_newlines=True)
+     if block:
+         stdout, stderr = p.communicate()
+         return stdout, stderr, p.returncode
+@@ -265,7 +266,7 @@ class XSettingsOverrides:
  
      def _dup_variant_as_dict(self):
          items = {}
