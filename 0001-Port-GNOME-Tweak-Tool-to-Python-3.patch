@@ -1,4 +1,4 @@
-From dceb95d9166927737518b8eb924e0615f28f73ec Mon Sep 17 00:00:00 2001
+From ef08ec5efdf256a8cdaa312652d6a5b0341c04e0 Mon Sep 17 00:00:00 2001
 From: Ikey Doherty <michael.i.doherty@intel.com>
 Date: Fri, 14 Apr 2017 16:55:03 +0100
 Subject: [PATCH] Port GNOME Tweak Tool to Python 3
@@ -10,11 +10,11 @@ ensure use of new Python approaches.
 Additionally, we fix a startup crash when GNOME Shell isn't running, i.e.
 GNOME Tweak Tool has been used in a GNOME based environment but not GNOME
 Shell itself.
-
 ---
 https://bugzilla.gnome.org/show_bug.cgi?id=781321
 
 Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
+
 ---
  configure.ac                                  |  2 +-
  gnome-tweak-tool                              |  2 +-
@@ -22,6 +22,7 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  gtweak/egowrapper.py                          |  8 ++++----
  gtweak/gsettings.py                           |  4 ++--
  gtweak/gshellwrapper.py                       |  8 ++++----
+ gtweak/gtksettings.py                         |  2 +-
  gtweak/tweakmodel.py                          |  2 +-
  gtweak/tweaks/tweak_group_interface.py        |  4 ++--
  gtweak/tweaks/tweak_group_shell.py            |  2 +-
@@ -33,10 +34,10 @@ Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
  gtweak/tweakview.py                           |  2 +-
  gtweak/utils.py                               |  5 +++--
  gtweak/widgets.py                             |  4 ++--
- 17 files changed, 59 insertions(+), 36 deletions(-)
+ 18 files changed, 60 insertions(+), 37 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 95c0214..9e14bed 100644
+index 4cbf455..4437c0d 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -4,7 +4,7 @@ AM_INIT_AUTOMAKE([foreign tar-ustar dist-xz no-dist-gzip])
@@ -47,9 +48,9 @@ index 95c0214..9e14bed 100644
 +AM_PATH_PYTHON([3])
  GLIB_GSETTINGS
  
- DESKTOP_SCHEMAS_REQUIRED_VERSION=3.21.2
+ DESKTOP_SCHEMAS_REQUIRED_VERSION=3.23.3
 diff --git a/gnome-tweak-tool b/gnome-tweak-tool
-index 8f05d52..e032aa8 100755
+index 01edb9b..93a2c05 100755
 --- a/gnome-tweak-tool
 +++ b/gnome-tweak-tool
 @@ -1,4 +1,4 @@
@@ -150,11 +151,24 @@ index ca7e7c0..3f2d8b6 100644
  
 -    print s == GnomeShellFactory().get_shell()
 +    print(s == GnomeShellFactory().get_shell())
+diff --git a/gtweak/gtksettings.py b/gtweak/gtksettings.py
+index a0c163b..61e036d 100644
+--- a/gtweak/gtksettings.py
++++ b/gtweak/gtksettings.py
+@@ -58,7 +58,7 @@ class GtkSettingsManager:
+ 
+         try:
+             os.makedirs(os.path.dirname(self._path))
+-        except OSError, e:
++        except OSError as e:
+             if e.errno is not errno.EEXIST:
+                 raise
+         except:
 diff --git a/gtweak/tweakmodel.py b/gtweak/tweakmodel.py
-index 0ad94de..b187826 100644
+index 750e108..f0e0e96 100644
 --- a/gtweak/tweakmodel.py
 +++ b/gtweak/tweakmodel.py
-@@ -88,7 +88,7 @@ class TweakGroup(object):
+@@ -91,7 +91,7 @@ class TweakGroup(object):
  
  class TweakModel(Gtk.ListStore):
      (COLUMN_NAME,
@@ -184,7 +198,7 @@ index 97751ed..ebf8a5f 100644
                  error = _("Could not list shell extensions")
  
 diff --git a/gtweak/tweaks/tweak_group_shell.py b/gtweak/tweaks/tweak_group_shell.py
-index 822d231..6401e92 100644
+index 9a17f7f..855a3c2 100644
 --- a/gtweak/tweaks/tweak_group_shell.py
 +++ b/gtweak/tweaks/tweak_group_shell.py
 @@ -47,7 +47,7 @@ class StaticWorkspaceTweak(Gtk.Box, _GSettingsTweak):
@@ -197,7 +211,7 @@ index 822d231..6401e92 100644
  
          self.combo = build_combo_box_text(default, *key_options)
 diff --git a/gtweak/tweaks/tweak_group_shell_extensions.py b/gtweak/tweaks/tweak_group_shell_extensions.py
-index 8ff6cd1..7f6a093 100644
+index a42db1f..e7cb76a 100644
 --- a/gtweak/tweaks/tweak_group_shell_extensions.py
 +++ b/gtweak/tweaks/tweak_group_shell_extensions.py
 @@ -168,7 +168,7 @@ class _ShellExtensionTweak(Gtk.ListBoxRow, Tweak):
@@ -218,9 +232,9 @@ index 8ff6cd1..7f6a093 100644
                  for extension in extensions:
                      try:
                          extension_widget = _ShellExtensionTweak(shell, extension, size_group=sg)
-@@ -306,8 +306,9 @@ class ShellExtensionTweakGroup(ListBoxTweakGroup):
-                                    *extension_tweaks)
-         
+@@ -309,8 +309,9 @@ class ShellExtensionTweakGroup(ListBoxTweakGroup):
+             return # We're done
+ 
          self.titlebar_widget = Gtk.Switch(visible=True)
 -        shell._settings.bind("disable-user-extensions", self.titlebar_widget,
 -                             "active", Gio.SettingsBindFlags.INVERT_BOOLEAN)
@@ -344,7 +358,7 @@ index 72ac36e..af8934e 100644
          return config
  
 diff --git a/gtweak/tweakview.py b/gtweak/tweakview.py
-index 0a2eaec..7ab720b 100644
+index 2a97d7e..c9cd9e1 100644
 --- a/gtweak/tweakview.py
 +++ b/gtweak/tweakview.py
 @@ -170,7 +170,7 @@ class Window(Gtk.ApplicationWindow):
