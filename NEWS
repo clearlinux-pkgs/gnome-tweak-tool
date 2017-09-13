@@ -1,3 +1,134 @@
+3.26.0
+======
+New major stable release.
+
+Translations:
+ Alexander Shopov [bg], Alan Mortensen [da], Bruce Cowan [en_GB],
+ Alexandre Franke [fr], Balázs Úr [hu], Gianvito Cavasoli [it],
+ Jiro Matsuzawa [ja], hanniedu [nl],Anders Jonsson [sv],
+ Trần Ngọc Quân [vi]
+
+3.25.92
+=======
+* Fix linking to GNOME Software from Extensions page (Jeremy)
+* Note that gnome-shell schemas >= 3.24 are required (Jeremy)
+
+Contributors:
+ Jeremy Bicha
+
+Translations:
+ Alexander Shopov [bg], Hjorth Larsen [da], Wolfgang Stöggl [de]
+ Jiri Grönroos [fi], gogo [hr], Seong-ho Cho [ko], Rūdolfs Mazurs [lv]
+ Piotr Drąg [ne], Rafael Fontenelle [pt_BR], Dušan Kazik [sk],
+ Cheng-Chia Tseng [zh_TW]
+
+3.25.91
+=======
+* Don't add appmenu to windows buttons if it's already there (Jeremy)
+* Prompt to log out when changing Application Menu setting (Jeremy)
+
+Translations:
+ Fran Dieguez [gl], gogo [hr], Gábor Kelemen [hu], Aurimas Černius [lt],
+ Athul R T [ml], Pawan Chitrakar [ne], Piotr Drąg [pl],
+ Милош Поповић [sr] [sr@latin], Милош Поповић [sr@latin],
+ Furkan Tokaç [tr]
+
+3.25.90.1
+=========
+* Fix vertical scrollbar placement (António)
+* Restore redesigned Window Focus Mode listbox (Jeremy)
+
+Contributors:
+ Jeremy Bicha, António Fernandes
+
+3.25.90
+=======
+* Remove Power Button setting; this feature is now in gnome-control-center
+  3.25.90+ (Jeremy)
+* Don't show HiDPI setting; use gnome-control-center 3.25.90+ instead (Jeremy)
+* Revert Focus Mode listbox to 3.24 combobox to eliminate vertical scrolling
+  (Jeremy)
+* Rename /usr/bin/gnome-tweaks back to /usr/bin/gnome-tweak-tool (Jeremy)
+* Add '--version' option to /usr/bin/gnome-tweak-tool (Alexander)
+* Make notification string translatable (Piotr)
+
+Contributors:
+ Jeremy Bicha, Piotr Drąg, Alexander Rüedlinger
+
+Translations:
+ Marek Cernocky [cs], Jordi Mas [ca], Daniel Mustieles [es],
+ Fabio Tomat [fur], Fran Dieguez [gl], gogo [hr], Kukuh Syafaat [id]
+ Aurimas Černius [lt], Baurzhan Muftakhidinov [kk], Matej Urbančič [sl]
+
+3.25.4
+======
+* Rename app to GNOME Tweaks (Alberto)
+* Rename binary to gnome-tweaks (Alberto)
+* Only allows numbers in Hi-DPI entry box (Jeremy)
+
+Contributors:
+ Jeremy Bicha, Alberto Fanjul
+
+Translations:
+ Mario Blättermann [de], Fabio Tomat [fr],  Kukuh Syafaat [id],
+ Dušan Kazik [sk]
+
+3.25.3
+======
+* Move Typing panel to Additional Layout Options dialog in
+  Keyboard & Mouse (Jeremy)
+* Move Compose Key setting to Keyboard & Mouse dialog (Jeremy)
+* Convert some settings to ListBoxes (Jeremy)
+* Several other UI tweaks to match Design Team mockup (Alberto, Jeremy)
+* Only show Top Bar page and Overview Shortcut if GNOME Shell is running
+  (Jeremy)
+* Enable 'appmenu' window button when disabling App Menu (Jeremy)
+* Use Ubuntu sort order for Left placement of window buttons (Jeremy)
+* Fix "blank slate" for Extensions page (Florian)
+* Drop build-time checks for run-time dependencies (Patrick)
+  Distributors, please see README for run-time dependencies
+* Consistently use /usr/bin/env python3 shebangs (Patrick)
+* Rewrite post-install script in Python (Patrick)
+* Handle SIGINT (Ctrl+C) (Alex)
+
+Contributors:
+  Jeremy Bicha, Alberto Fanjul, Patrick Griffis, Rui Matos,
+  Alex Muñoz, Florian Müllner
+
+Translations:
+ Jordi Mas [ca], Daniel Mustieles [es], Fabio Tomat [fur],
+ Gábor Kelemen [hu], Kukuh Syafaat [id], Baurzhan Muftakhidinov [kk],
+ Aurimas Černius [lt]
+
+3.25.2
+======
+* Add "Battery Percentage" tweak (Alberto)
+* Add "Disable While Typing" tweak (Rui)
+* Add Left/Right Placement tweak for window buttons (Jeremy)
+* Update About to show Tweak Tool and GTK+ versions (Jeremy)
+* Add "blank slate" for Extensions page (Florian)
+* Remove support for installing and uninstalling extensions since
+  GNOME Software handles this since 3.22 (Florian)
+* Other UI tweaks to Extensions page (Florian)
+* Many UI tweaks suggested by Allan Day (Jeremy)
+* Misc code cleanup (Jeremy)
+* Use Unicode in translatable strings (Piotr)
+* Create config directories as necessary (Florian)
+* Install appstream metadata to /usr/share/metainfo/ (Jeremy)
+* Switch from python2 to python3 (Ikey)
+* Switch from autotools to meson (Florian)
+* Drop intltool dependency (Florian)
+
+Contributors:
+  Jeremy Bicha, Ikey Doherty, Piotr Drąg, Alberto Fanjul, Rui Matos,
+  Florian Müllner
+
+Translations:
+ Mario Blättermann and Florian Heiser [de], Daniel Mustieles [es],
+ Fabio Tomat [fur], gogo [hr], Balázs Úr [hu], Kukuh Syafaat [id],
+ Baurzhan Muftakhidinov [kk], Aurimas Černius [lt], Tiago Santos [pt],
+ Matej Urbančič [sl], Furkan Ahmet Kara [tr]
+
 3.24.1
 ======
 * Fix search (Rui)
