@@ -4,16 +4,17 @@
 #
 Name     : gnome-tweak-tool
 Version  : 3.26.2.1
-Release  : 9
+Release  : 10
 URL      : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.2.1.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.2.1.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-3.0
 Requires: gnome-tweak-tool-bin
-Requires: gnome-tweak-tool-python
+Requires: gnome-tweak-tool-python3
 Requires: gnome-tweak-tool-data
 Requires: gnome-tweak-tool-locales
+Requires: gnome-tweak-tool-python
 BuildRequires : meson
 BuildRequires : ninja
 BuildRequires : python3
@@ -53,9 +54,19 @@ locales components for the gnome-tweak-tool package.
 %package python
 Summary: python components for the gnome-tweak-tool package.
 Group: Default
+Requires: gnome-tweak-tool-python3
 
 %description python
 python components for the gnome-tweak-tool package.
+
+
+%package python3
+Summary: python3 components for the gnome-tweak-tool package.
+Group: Default
+Requires: python3-core
+
+%description python3
+python3 components for the gnome-tweak-tool package.
 
 
 %prep
@@ -66,7 +77,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506983668
+export SOURCE_DATE_EPOCH=1507154263
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain  builddir
 ninja -v -C builddir
 
@@ -97,6 +108,9 @@ DESTDIR=%{buildroot} ninja -C builddir install
 /usr/share/metainfo/gnome-tweak-tool.appdata.xml
 
 %files python
+%defattr(-,root,root,-)
+
+%files python3
 %defattr(-,root,root,-)
 /usr/lib/python3*/*
 
