@@ -1,0 +1,42 @@
+From 1b7149f8f5f38726822439d6b9c960801ca9ecb2 Mon Sep 17 00:00:00 2001
+From: Simon McVittie <smcv@debian.org>
+Date: Tue, 6 Mar 2018 12:09:08 +0000
+Subject: [PATCH] Don't crash if a GSettings schema is missing
+
+GSettingsMissingError doesn't have a message attribute, at least under
+Python 3.6. This caused a crash in distributions like Debian where
+commit 53a8edb7 "desktop: Don't install panel" was reverted to support
+Nautilus 3.26, when used in conjunction with a prerelease build of
+Nautilus 3.27.
+
+Use the logging module's support for '%' interpolation while I'm
+touching those lines anyway, as recommended by pylint warning W1201.
+---
+ gtweak/widgets.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gtweak/widgets.py b/gtweak/widgets.py
+index c282bfe..3d48a51 100644
+--- a/gtweak/widgets.py
++++ b/gtweak/widgets.py
+@@ -134,7 +134,7 @@ def adjust_schema_for_overrides(originalSchema, key, options):
+             options['schema_filename'] = overridesFile
+             return overridesSchema
+     except GSettingsMissingError as e:
+-        logging.info("GSetting missing %s" % (e.message))
++        logging.info("GSetting missing %s", e)
+ 
+     return originalSchema
+ 
+@@ -157,7 +157,7 @@ class _GSettingsTweak(Tweak):
+             self.settings = GSettingsFakeSetting()
+             Tweak.__init__(self,"","")
+             self.loaded = False
+-            logging.info("GSetting missing %s" % (e.message))
++            logging.info("GSetting missing %s", e)
+         except KeyError:
+             self.settings = GSettingsFakeSetting()
+             Tweak.__init__(self,"","")
+--
+libgit2 0.26.0
+
