@@ -4,7 +4,7 @@
 #
 Name     : gnome-tweak-tool
 Version  : 3.26.4
-Release  : 15
+Release  : 16
 URL      : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.4.tar.xz
 Summary  : No detailed summary available
@@ -18,6 +18,7 @@ Requires: gnome-tweak-tool-python
 BuildRequires : meson
 BuildRequires : ninja
 BuildRequires : python3
+Patch1: 0001-dont-crash-if-gsettings-schema-is-missing.patch
 
 %description
 GNOME TWEAKS
@@ -71,14 +72,15 @@ python3 components for the gnome-tweak-tool package.
 
 %prep
 %setup -q -n gnome-tweak-tool-3.26.4
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1513084524
-CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain  builddir
+export SOURCE_DATE_EPOCH=1523024715
+CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --prefix /usr --buildtype=plain   builddir
 ninja -v -C builddir
 
 %install
