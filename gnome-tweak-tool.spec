@@ -4,7 +4,7 @@
 #
 Name     : gnome-tweak-tool
 Version  : 3.26.4
-Release  : 19
+Release  : 20
 URL      : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.4.tar.xz
 Source0  : https://download.gnome.org/sources/gnome-tweak-tool/3.26/gnome-tweak-tool-3.26.4.tar.xz
 Summary  : No detailed summary available
